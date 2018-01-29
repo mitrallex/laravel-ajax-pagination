@@ -968,8 +968,9 @@ module.exports = __webpack_require__(42);
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -987,6 +988,8 @@ window.Vue = __webpack_require__(35);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// import Pagination from './components/PaginationComponent.vue';
+
 Vue.component('pagination', __webpack_require__(38));
 
 var app = new Vue({
@@ -994,26 +997,25 @@ var app = new Vue({
 
     data: {
         posts: {},
-        pagination: {}
+        pagination: {
+            'current_page': 1
+        }
     },
+    //
+    // components: {
+    //     Pagination,
+    // },
 
     methods: {
         fetchPosts: function fetchPosts(page) {
             var _this = this;
 
-            axios.get('posts?page=' + page).then(function (response) {
+            axios.get('posts?page=' + this.pagination.current_page).then(function (response) {
                 _this.posts = response.data.data.data;
                 _this.pagination = response.data.pagination;
             }).catch(function (error) {
                 console.log(error.response.data);
             });
-        },
-        change: function change(page) {
-            if (page > this.pagination.last_page) {
-                page = this.pagination.last_page;
-            }
-            this.pagination.current_page = page;
-            this.fetchPosts(page);
         }
     },
 
@@ -43108,7 +43110,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.pagination.current_page === page;
         },
         changePage: function changePage(page) {
-            this.$emit('newpage', page);
+            if (page > this.pagination.last_page) {
+                page = this.pagination.last_page;
+            }
+
+            this.pagination.current_page = page;
+            this.$emit('paginate');
         }
     },
 
@@ -43229,6 +43236,7 @@ var render = function() {
                 class: _vm.isCurrentPage(page) ? "is-current" : "",
                 on: {
                   click: function($event) {
+                    $event.preventDefault()
                     _vm.changePage(page)
                   }
                 }

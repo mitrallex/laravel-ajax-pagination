@@ -15,6 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// import Pagination from './components/PaginationComponent.vue';
+
 Vue.component('pagination', require('./components/PaginationComponent.vue'));
 
 const app = new Vue({
@@ -22,12 +24,18 @@ const app = new Vue({
 
     data: {
         posts: {},
-        pagination: {}
+        pagination: {
+            'current_page': 1
+        }
     },
+    //
+    // components: {
+    //     Pagination,
+    // },
 
     methods: {
         fetchPosts(page) {
-            axios.get('posts?page=' + page)
+            axios.get('posts?page=' + this.pagination.current_page)
                 .then(response => {
                     this.posts = response.data.data.data;
                     this.pagination = response.data.pagination;
@@ -35,14 +43,6 @@ const app = new Vue({
                 .catch(error => {
                     console.log(error.response.data);
                 });
-        },
-
-        change(page) {
-            if (page > this.pagination.last_page) {
-                page = this.pagination.last_page;
-            }
-            this.pagination.current_page = page;
-            this.fetchPosts(page);
         }
     },
 

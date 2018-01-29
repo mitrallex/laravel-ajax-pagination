@@ -6,7 +6,7 @@
         <a class="pagination-next" @click.prevent="changePage(pagination.last_page)" :disabled="pagination.current_page >= pagination.last_page">Last page</a>
         <ul class="pagination-list">
             <li v-for="page in pages">
-                <a class="pagination-link" :class="isCurrentPage(page) ? 'is-current' : ''" @click="changePage(page)">{{ page }}</a>
+                <a class="pagination-link" :class="isCurrentPage(page) ? 'is-current' : ''" @click.prevent="changePage(page)">{{ page }}</a>
             </li>
         </ul>
     </nav>
@@ -22,7 +22,12 @@
             },
 
             changePage(page) {
-                this.$emit('newpage', page);
+                if (page > this.pagination.last_page) {
+                    page = this.pagination.last_page;
+                }
+
+                this.pagination.current_page = page;
+                this.$emit('paginate');
             }
         },
 
