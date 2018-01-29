@@ -1,9 +1,9 @@
 <template>
     <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
+        <a class="pagination-previous" @click="changePage(1)" :disabled="pagination.current_page <= 1">First page</a>
         <a class="pagination-previous" @click="changePage(pagination.current_page - 1)" :disabled="pagination.current_page <= 1">Previous</a>
-        <a class="pagination-previous" @click="changePage(1)">First page</a>
-        <a class="pagination-next" @click="changePage(pagination.last_page)">Last page</a>
         <a class="pagination-next" @click="changePage(pagination.current_page + 1)" :disabled="pagination.current_page >= pagination.last_page">Next page</a>
+        <a class="pagination-next" @click="changePage(pagination.last_page)" :disabled="pagination.current_page >= pagination.last_page">Last page</a>
         <ul class="pagination-list">
             <li v-for="page in pages">
                 <a class="pagination-link" :class="isCurrentPage(page) ? 'is-current' : ''" @click="changePage(page)">{{ page }}</a>
@@ -14,13 +14,7 @@
 
 <script>
     export default {
-        props: ['pagination'],
-
-        data() {
-            return {
-                offset: 2
-            }
-        },
+        props: ['pagination', 'offset'],
 
         methods: {
             isCurrentPage(page) {
@@ -34,17 +28,23 @@
 
         computed: {
             pages() {
-                if (!this.pagination.to) {
-                    return [];
-                }
-
                 let pages = [];
 
-                for (let i = this.pagination.current_page - this.offset; i <= this.pagination.current_page + this.offset; i++) {
-                    if (i < 1 || i > this.pagination.last_page) {
-                        continue;
-                    }
-                    pages.push(i);
+                let from = this.pagination.current_page - Math.floor(this.offset / 2);
+
+                if (from < 1) {
+                    from = 1;
+                }
+
+                let to = from + this.offset - 1;
+
+                if (to > this.pagination.last_page) {
+                    to = this.pagination.last_page;
+                }
+
+                while (from <= to) {
+                    pages.push(from);
+                    from++;
                 }
 
                 return pages;

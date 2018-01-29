@@ -963,7 +963,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(10);
-module.exports = __webpack_require__(38);
+module.exports = __webpack_require__(42);
 
 
 /***/ }),
@@ -987,7 +987,7 @@ window.Vue = __webpack_require__(35);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('pagination', __webpack_require__(49));
+Vue.component('pagination', __webpack_require__(38));
 
 var app = new Vue({
     el: '#app',
@@ -42922,30 +42922,14 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 /* 38 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(50)
+var normalizeComponent = __webpack_require__(39)
 /* script */
-var __vue_script__ = __webpack_require__(51)
+var __vue_script__ = __webpack_require__(40)
 /* template */
-var __vue_template__ = __webpack_require__(52)
+var __vue_template__ = __webpack_require__(41)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -42984,7 +42968,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 50 */
+/* 39 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -43093,7 +43077,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 51 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43114,14 +43098,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['pagination'],
-
-    data: function data() {
-        return {
-            offset: 2
-        };
-    },
-
+    props: ['pagination', 'offset'],
 
     methods: {
         isCurrentPage: function isCurrentPage(page) {
@@ -43134,17 +43111,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         pages: function pages() {
-            if (!this.pagination.to) {
-                return [];
-            }
-
             var pages = [];
 
-            for (var i = this.pagination.current_page - this.offset; i <= this.pagination.current_page + this.offset; i++) {
-                if (i < 1 || i > this.pagination.last_page) {
-                    continue;
-                }
-                pages.push(i);
+            var from = this.pagination.current_page - Math.floor(this.offset / 2);
+
+            if (from < 1) {
+                from = 1;
+            }
+
+            var to = from + this.offset - 1;
+
+            if (to > this.pagination.last_page) {
+                to = this.pagination.last_page;
+            }
+
+            while (from <= to) {
+                pages.push(from);
+                from++;
             }
 
             return pages;
@@ -43153,7 +43136,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 52 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -43174,19 +43157,6 @@ var render = function() {
           attrs: { disabled: _vm.pagination.current_page <= 1 },
           on: {
             click: function($event) {
-              _vm.changePage(_vm.pagination.current_page - 1)
-            }
-          }
-        },
-        [_vm._v("Previous")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "pagination-previous",
-          on: {
-            click: function($event) {
               _vm.changePage(1)
             }
           }
@@ -43197,14 +43167,15 @@ var render = function() {
       _c(
         "a",
         {
-          staticClass: "pagination-next",
+          staticClass: "pagination-previous",
+          attrs: { disabled: _vm.pagination.current_page <= 1 },
           on: {
             click: function($event) {
-              _vm.changePage(_vm.pagination.last_page)
+              _vm.changePage(_vm.pagination.current_page - 1)
             }
           }
         },
-        [_vm._v("Last page")]
+        [_vm._v("Previous")]
       ),
       _vm._v(" "),
       _c(
@@ -43221,6 +43192,22 @@ var render = function() {
           }
         },
         [_vm._v("Next page")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "pagination-next",
+          attrs: {
+            disabled: _vm.pagination.current_page >= _vm.pagination.last_page
+          },
+          on: {
+            click: function($event) {
+              _vm.changePage(_vm.pagination.last_page)
+            }
+          }
+        },
+        [_vm._v("Last page")]
       ),
       _vm._v(" "),
       _c(
@@ -43256,6 +43243,12 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-2a6048c8", module.exports)
   }
 }
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
