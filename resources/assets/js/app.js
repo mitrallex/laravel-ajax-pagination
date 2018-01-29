@@ -30,7 +30,7 @@ const app = new Vue({
             axios.get('posts?page=' + page)
                 .then(response => {
                     this.posts = response.data.data.data;
-                    this.pagination = response.data.pagination
+                    this.pagination = response.data.pagination;
                 })
                 .catch(error => {
                     console.log(error.response.data);
@@ -38,6 +38,9 @@ const app = new Vue({
         },
 
         change(page) {
+            if (page > this.pagination.last_page) {
+                page = this.pagination.last_page;
+            }
             this.pagination.current_page = page;
             this.fetchPosts(page);
         }

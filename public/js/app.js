@@ -1009,6 +1009,9 @@ var app = new Vue({
             });
         },
         change: function change(page) {
+            if (page > this.pagination.last_page) {
+                page = this.pagination.last_page;
+            }
             this.pagination.current_page = page;
             this.fetchPosts(page);
         }
@@ -43157,6 +43160,7 @@ var render = function() {
           attrs: { disabled: _vm.pagination.current_page <= 1 },
           on: {
             click: function($event) {
+              $event.preventDefault()
               _vm.changePage(1)
             }
           }
@@ -43171,6 +43175,7 @@ var render = function() {
           attrs: { disabled: _vm.pagination.current_page <= 1 },
           on: {
             click: function($event) {
+              $event.preventDefault()
               _vm.changePage(_vm.pagination.current_page - 1)
             }
           }
@@ -43187,6 +43192,7 @@ var render = function() {
           },
           on: {
             click: function($event) {
+              $event.preventDefault()
               _vm.changePage(_vm.pagination.current_page + 1)
             }
           }
@@ -43203,6 +43209,7 @@ var render = function() {
           },
           on: {
             click: function($event) {
+              $event.preventDefault()
               _vm.changePage(_vm.pagination.last_page)
             }
           }
