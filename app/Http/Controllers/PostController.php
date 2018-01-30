@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Posts;
+use App\Post;
 
-class PostsController extends Controller
+class PostController extends Controller
 {
     public function index()
     {
-        $posts = Posts::paginate(3);
+        $posts = Post::paginate(3);
 
         $response = [
             'pagination' => [
