@@ -26,27 +26,23 @@
             .content:last-child {
                 border-bottom: none !important;
             }
-            .pagination {
-                margin-top: 40px;
-            }
         </style>
     </head>
     <body>
         <div class="container" id="app">
             <div class="box">
-                    <article>
-                        <div class="content" v-for="post in posts">
-                            <h1>
-                                @{{ post.title }}
-                            </h1>
-                            <p>
-                                @{{ post.body }}
-                            </p>
-                        </div>
-                    </article>
+                <article>
+                    <div class="content" v-for="post in posts">
+                        <h1>
+                            @{{ post.title }}
+                        </h1>
+                        <p>
+                            @{{ post.body }}
+                        </p>
+                    </div>
+                </article>
 
-                    <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchPosts()"></pagination>
-                </div>
+                <pagination v-if="pagination.last_page > 1" :pagination="pagination" :offset="5" @paginate="fetchPosts()"></pagination>
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>

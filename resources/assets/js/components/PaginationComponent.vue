@@ -12,6 +12,12 @@
     </nav>
 </template>
 
+<style>
+    .pagination {
+        margin-top: 40px;
+    }
+</style>
+
 <script>
     export default {
         props: ['pagination', 'offset'],
