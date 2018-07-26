@@ -8,7 +8,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class PostsTest extends TestCase
 {
     use RefreshDatabase;
-
+        
+    protected $post;
+    
     public function setUp()
     {
         parent::setUp();
